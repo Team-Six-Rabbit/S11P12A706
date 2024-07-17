@@ -28,4 +28,6 @@ public class BattleRegistDto {
 
 	// Opinion 필드
 	private String opinion;
+
+	// private List<VoteOpinion> voteOpinion;
 }
