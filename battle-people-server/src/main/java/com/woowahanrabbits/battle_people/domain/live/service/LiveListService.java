@@ -7,6 +7,6 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface LiveListService {
-    Page<BattleBoard> getActiveBattleBoards(String keyword, Pageable pageable);
-    Page<BattleBoard> getWaitBattleBoards(String keyword, Pageable pageable);
+    List<BattleBoard> getActiveBattleBoards(String keyword);
+    List<BattleBoard> getWaitBattleBoards(String keyword);
 }

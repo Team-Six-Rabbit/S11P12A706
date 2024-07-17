@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpResponse;
+import java.util.List;
 
 
 @Slf4j
@@ -19,30 +20,20 @@ import java.net.http.HttpResponse;
 @RequiredArgsConstructor
 @RequestMapping("/live")
 public class LiveListController {
+
     private final LiveListService liveListService;
 
-    /**
-     *
-     * @param keyword
-     * @param pageable
-     * @return
-     */
     @GetMapping("/active")
-    public Page<BattleBoard> getActiveBattleBoards(
-            @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
-            @PageableDefault(size = 10, sort = "id") Pageable pageable) {
-       try {
-           return liveListService.getActiveBattleBoards(keyword, pageable);
-       }
-
-
+    public ResponseEntity<List<BattleBoard>> getActiveBattleBoards(
+            @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword) {
+        List<BattleBoard> activeBattleBoards = liveListService.getActiveBattleBoards(keyword);
+        return ResponseEntity.ok(activeBattleBoards);
     }
 
     @GetMapping("/wait")
-    public Page<BattleBoard> getWaitBattleBoards(
-            @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
-            @PageableDefault(size = 10, sort = "id") Pageable pageable) {
-        return liveListService.getWaitBattleBoards(keyword, pageable);
+    public ResponseEntity<List<BattleBoard>> getWaitBattleBoards(
+            @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword) {
+        List<BattleBoard> waitBattleBoards = liveListService.getWaitBattleBoards(keyword);
+        return ResponseEntity.ok(waitBattleBoards);
     }
-
 }

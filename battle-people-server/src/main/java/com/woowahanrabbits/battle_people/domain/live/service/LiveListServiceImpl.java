@@ -13,32 +13,26 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+
 @Service
 @RequiredArgsConstructor
-public class LiveListServiceImpl implements LiveListService{
+public class LiveListServiceImpl implements LiveListService {
 
     private final BattleRepository battleRepository;
 
     @Override
-    public Page<BattleBoard> getActiveBattleBoards(String keyword, Pageable pageable) {
+    public List<BattleBoard> getActiveBattleBoards(String keyword) {
         Date currentTime = new Date();
-
-        return battleRepository.findAllActiveBattleBoards(currentTime, keyword, pageable);
-
+        return battleRepository.findAllActiveBattleBoards(currentTime, keyword);
     }
 
     @Override
-    public Page<BattleBoard> getWaitBattleBoards(String keyword, Pageable pageable) {
+    public List<BattleBoard> getWaitBattleBoards(String keyword) {
         Date currentTime = new Date();
-
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentTime);
-
         calendar.add(Calendar.MINUTE, 20);
-
         Date endTime = calendar.getTime();
-
-
-        return battleRepository.findAllWaitBattleBoards(currentTime, endTime, keyword, pageable);
+        return battleRepository.findAllWaitBattleBoards(currentTime, endTime, keyword);
     }
 }

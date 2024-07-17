@@ -25,7 +25,6 @@ public class BattleBoard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @ManyToOne
     @JoinColumn(name = "regist_user_id", nullable = false)
     private User registUser;
@@ -53,5 +52,4 @@ public class BattleBoard {
     protected void onCreate() {
         this.registDate = new Date();
     }
-
 }
