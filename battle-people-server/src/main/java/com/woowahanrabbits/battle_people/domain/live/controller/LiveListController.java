@@ -7,12 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpResponse;
-import java.util.List;
 
 
 @Slf4j
@@ -24,16 +21,18 @@ public class LiveListController {
     private final LiveListService liveListService;
 
     @GetMapping("/active")
-    public ResponseEntity<List<BattleBoard>> getActiveBattleBoards(
-            @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword) {
-        List<BattleBoard> activeBattleBoards = liveListService.getActiveBattleBoards(keyword);
+    public ResponseEntity<Page<BattleBoard>> getActiveBattleBoards(
+            @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+            @PageableDefault(size = 10) Pageable pageable) {
+        Page<BattleBoard> activeBattleBoards = liveListService.getActiveBattleBoards(keyword, pageable);
         return ResponseEntity.ok(activeBattleBoards);
     }
 
     @GetMapping("/wait")
-    public ResponseEntity<List<BattleBoard>> getWaitBattleBoards(
-            @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword) {
-        List<BattleBoard> waitBattleBoards = liveListService.getWaitBattleBoards(keyword);
+    public ResponseEntity<Page<BattleBoard>> getWaitBattleBoards(
+            @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+            @PageableDefault(size = 10) Pageable pageable) {
+        Page<BattleBoard> waitBattleBoards = liveListService.getWaitBattleBoards(keyword, pageable);
         return ResponseEntity.ok(waitBattleBoards);
     }
 }
