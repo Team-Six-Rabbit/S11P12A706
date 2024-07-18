@@ -2,12 +2,14 @@ package com.woowahanrabbits.battle_people.domain.live.domain;
 
 import com.woowahanrabbits.battle_people.domain.user.domain.User;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
 
 @Entity
 @Data
+@Builder
 public class LiveApplyUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
