@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 
 import App from "@/App";
 import LoginPage from "@/pages/LoginPage";
+import LiveBoardPage from "@/pages/LiveBoardPage";
 
 const router = createBrowserRouter([
 	{
@@ -11,6 +12,10 @@ const router = createBrowserRouter([
 	{
 		path: "/login",
 		element: <LoginPage />,
+	},
+	{
+		path: "/live-board",
+		element: <LiveBoardPage />,
 	},
 ]);
 
