@@ -1,6 +1,4 @@
-// import { render, screen, waitFor } from "@testing-library/react";
 import { describe, it } from "vitest";
-// import App from "@/App";
 
 describe("App.tsx Rendering Test", () => {
 	it('App.tsx shows "Vite + React"', async () => {
