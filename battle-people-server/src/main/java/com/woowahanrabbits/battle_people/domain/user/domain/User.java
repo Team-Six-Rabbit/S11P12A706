@@ -2,6 +2,7 @@ package com.woowahanrabbits.battle_people.domain.user.domain;
 
 import java.time.LocalDate;
 
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class User {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,4 +36,5 @@ public class User {
     private String access_token;
     private LocalDate penalty_start_date;
     private LocalDate penalty_end_date;
+
 }

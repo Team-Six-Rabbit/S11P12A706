@@ -20,6 +20,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class BattleBoard {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
