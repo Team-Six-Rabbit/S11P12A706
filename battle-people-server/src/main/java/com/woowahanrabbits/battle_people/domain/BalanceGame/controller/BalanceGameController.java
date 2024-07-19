@@ -26,13 +26,8 @@ public class BalanceGameController {
 	@PostMapping("")
 	@Operation(summary = "[점화] 밸런스 게임을 생성한다.")
 	public ResponseEntity<?> registBalanceGame(@RequestBody BattleReturnDto battleReturnDto) {
-
 		balanceGameService.addBalanceGame(battleReturnDto);
-
-		System.out.println(battleReturnDto.getBattleBoard().toString());
-		System.out.println(battleReturnDto.getBattleBoard().getRegistUser().toString());
-		System.out.println(battleReturnDto.getBattleBoard().getOppositeUser().toString());
-		System.out.println(battleReturnDto.getOpinionList().toString());
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+
 }
