@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Header from "@/components/header.tsx";
-import CategoryContent from "@/components/common/CategoryContent"; // CategoryContent 컴포넌트 임포트
+import Header from "@/components/header";
+import CategoryContent from "@/components/common/Board/CategoryContent"; // CategoryContent 컴포넌트 임포트
 
 const categories = [
 	{ id: "all", name: "전체" },
