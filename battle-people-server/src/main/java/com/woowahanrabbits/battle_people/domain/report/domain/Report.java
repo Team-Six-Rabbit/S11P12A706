@@ -1,6 +1,6 @@
 package com.woowahanrabbits.battle_people.domain.report.domain;
 
-import com.woowahanrabbits.battle_people.domain.user.domain.User;
+import com.woowahanrabbits.battle_people.domain.user.domain.UserEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -15,14 +15,14 @@ public class Report {
 
     @ManyToOne
     @JoinColumn(name = "regist_user_id")
-    private User registUser;
+    private UserEntity registUser;
 
     private int tableCode;
     private Long sequenceId;
 
     @ManyToOne
     @JoinColumn(name = "reported_user_id")
-    private User reportedUser;
+    private UserEntity reportedUser;
 
     private int reportCode;
     private String context;

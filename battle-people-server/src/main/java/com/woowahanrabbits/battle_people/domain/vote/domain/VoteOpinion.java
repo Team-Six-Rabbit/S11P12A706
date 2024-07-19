@@ -1,6 +1,6 @@
 package com.woowahanrabbits.battle_people.domain.vote.domain;
 
-import com.woowahanrabbits.battle_people.domain.user.domain.User;
+import com.woowahanrabbits.battle_people.domain.user.domain.UserEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,7 +17,7 @@ public class VoteOpinion {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserEntity user;
     private String Opinion;
     private Integer preCount;
     private Integer finalCount;

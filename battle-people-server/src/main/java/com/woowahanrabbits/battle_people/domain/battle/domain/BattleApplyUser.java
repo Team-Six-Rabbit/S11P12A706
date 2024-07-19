@@ -1,6 +1,6 @@
 package com.woowahanrabbits.battle_people.domain.battle.domain;
 
-import com.woowahanrabbits.battle_people.domain.user.domain.User;
+import com.woowahanrabbits.battle_people.domain.user.domain.UserEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,7 +19,7 @@ public class BattleApplyUser {
     @Id
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserEntity user;
 
     private int selectedOpinion;
     private Date applyDate;

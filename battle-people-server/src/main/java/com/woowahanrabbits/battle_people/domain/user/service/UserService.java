@@ -1,53 +1,46 @@
 package com.woowahanrabbits.battle_people.domain.user.service;
 
-import java.time.LocalDate;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.woowahanrabbits.battle_people.domain.user.domain.User;
-import com.woowahanrabbits.battle_people.domain.user.dto.UserCustom;
+import com.woowahanrabbits.battle_people.domain.user.domain.UserEntity;
+import com.woowahanrabbits.battle_people.domain.user.dto.JoinDTO;
 import com.woowahanrabbits.battle_people.domain.user.infrastructure.UserRepository;
 
 @Service
 public class UserService {
 
+	private final AuthenticationManager authenticationManager;
 	private final UserRepository userRepository;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+	@Autowired
+	public UserService(AuthenticationManager authenticationManager, UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+		this.authenticationManager = authenticationManager;
 		this.userRepository = userRepository;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
 
-	public Boolean join(UserCustom userCustom) {
-		// 입력 - UserCustom
-		String email = userCustom.getEmail();
-		String hashedPassword = bCryptPasswordEncoder.encode(userCustom.getPassword());
-		String nickname = userCustom.getNickname();
-		// String img_url = userCustom.getImg_url();
-		// Integer rating = userCustom.getRating();
-		// String access_token = userCustom.getAccess_token();
-		// LocalDate penalty_start_date = userCustom.getPenalty_start_date();
-		// LocalDate penalty_end_date = userCustom.getPenalty_end_date();
+	public Boolean join(JoinDTO joinDTO) {
+		String email = joinDTO.getEmail();
+		String password = joinDTO.getPassword();
 
-		Boolean isExist = userRepository.existsByEmail(email);
-		if (isExist) {
+		Boolean isExists = userRepository.existsByEmail(email);
+
+		if (isExists) {
 			return false;
 		}
-
-		// Entity - User
-		User user = new User();
-
-		user.setEmail(email);
-		user.setPassword(hashedPassword);
-		user.setNickname(nickname);
-		// user.setRating(rating);
-		// user.setAccess_token(access_token);
-		// user.setPenalty_start_date(penalty_start_date);
-		// user.setPenalty_end_date(penalty_end_date);
-
-		userRepository.save(user);
+		UserEntity userEntity = new UserEntity(email, bCryptPasswordEncoder.encode(password), "ROLE_USER");
+		userRepository.save(userEntity);
 		return true;
+	}
+
+	public Authentication authenticate(String username, String password) {
+		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
+		return authenticationManager.authenticate(authToken);
 	}
 }

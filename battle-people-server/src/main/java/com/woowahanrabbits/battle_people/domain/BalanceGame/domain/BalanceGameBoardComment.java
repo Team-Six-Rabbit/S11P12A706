@@ -1,7 +1,7 @@
 package com.woowahanrabbits.battle_people.domain.BalanceGame.domain;
 
 import com.woowahanrabbits.battle_people.domain.battle.domain.BattleBoard;
-import com.woowahanrabbits.battle_people.domain.user.domain.User;
+import com.woowahanrabbits.battle_people.domain.user.domain.UserEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -21,7 +21,7 @@ public class BalanceGameBoardComment {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserEntity user;
 
     private String content;
     private Date registDate;

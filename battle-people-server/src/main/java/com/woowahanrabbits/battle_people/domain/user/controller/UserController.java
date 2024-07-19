@@ -1,33 +1,26 @@
 package com.woowahanrabbits.battle_people.domain.user.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.woowahanrabbits.battle_people.domain.user.dto.UserCustom;
+import com.woowahanrabbits.battle_people.domain.user.dto.JoinDTO;
 import com.woowahanrabbits.battle_people.domain.user.service.UserService;
 
-@Controller
-@ResponseBody
-public class UserController {
+import lombok.RequiredArgsConstructor;
 
+@RestController
+@RequestMapping("/user")
+@RequiredArgsConstructor
+public class UserController {
 	private final UserService userService;
 
-	public UserController(UserService userService) {
-		this.userService = userService;
-	}
-
-	@GetMapping("/")
-	public String index() {
-		return "index";
-	}
-
 	@PostMapping("/join")
-	public String joinProcess(UserCustom userCustom) {
-		if (userService.join(userCustom)) {
-			return "JOIN SUCCESS";
+	public String joinProcess(@RequestBody JoinDTO joinDTO) {
+		if (userService.join(joinDTO)) {
+			return "Success";
 		}
-		return "JOIN FAILED";
+		return "Fail";
 	}
 }

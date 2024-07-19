@@ -12,7 +12,7 @@ public class UserToken {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserEntity user;
 
     private String accessToken;
     private String refreshToken;

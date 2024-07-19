@@ -1,7 +1,7 @@
 package com.woowahanrabbits.battle_people.domain.live.domain;
 
 import com.woowahanrabbits.battle_people.domain.battle.domain.BattleBoard;
-import com.woowahanrabbits.battle_people.domain.user.domain.User;
+import com.woowahanrabbits.battle_people.domain.user.domain.UserEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -20,7 +20,7 @@ public class LiveChat {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserEntity user;
 
     private String chatContext;
     private Date registDate;

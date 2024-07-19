@@ -1,6 +1,6 @@
 package com.woowahanrabbits.battle_people.domain.notify.domain;
 
-import com.woowahanrabbits.battle_people.domain.user.domain.User;
+import com.woowahanrabbits.battle_people.domain.user.domain.UserEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -15,7 +15,7 @@ public class Notify {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserEntity user;
 
     private int notifyCode;
     private String context;
