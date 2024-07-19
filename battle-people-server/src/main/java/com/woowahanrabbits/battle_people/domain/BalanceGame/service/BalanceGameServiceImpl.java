@@ -42,4 +42,9 @@ public class BalanceGameServiceImpl implements BalanceGameService {
 	public Page<?> getBalanceGameByConditions(int category, int status, Pageable pageable) {
 		return null;
 	}
+
+	@Override
+	public void deleteBalanceGame(Long id) {
+		battleRepository.deleteById(id);
+	}
 }
