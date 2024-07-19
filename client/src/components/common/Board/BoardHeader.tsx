@@ -1,14 +1,14 @@
 import fireIcon from "@/assets/images/Fire.png";
-import BoardCategory from "./BoardCategory";
-import RadioButtonGroup from "./RadioButtonGroup"; // 추가
+import BoardCategory from "@/components/common/Board/BoardCategory";
+import RadioButtonGroup from "@/components/common/Board/RadioButtonGroup"; // 추가
 
 interface BoardHeaderProps {
 	boardName: string;
 	categories: { id: string; name: string }[];
 	selectedCategory: string;
 	onCategorySelect: (category: string) => void;
-	selectedStatus: string; // 추가
-	onStatusSelect: (status: string) => void; // 추가
+	selectedStatus: "live" | "upcoming" | "ended"; // 수정
+	onStatusSelect: (status: "live" | "upcoming" | "ended") => void; // 수정
 }
 
 function BoardHeader({

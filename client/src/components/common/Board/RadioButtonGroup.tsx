@@ -1,17 +1,17 @@
 interface RadioButtonGroupProps {
-	selectedStatus: string;
-	onStatusSelect: (status: string) => void;
+	selectedStatus: "live" | "upcoming" | "ended";
+	onStatusSelect: (status: "live" | "upcoming" | "ended") => void;
 }
 
 function RadioButtonGroup({
 	selectedStatus,
 	onStatusSelect,
 }: RadioButtonGroupProps) {
-	const getStatusLabel = (status: string) => {
+	const getStatusLabel = (status: "live" | "upcoming" | "ended") => {
 		if (status === "live") {
 			return "실시간";
 		}
-		if (status === "scheduled") {
+		if (status === "upcoming") {
 			return "예정된";
 		}
 		return "종료된";
@@ -19,7 +19,7 @@ function RadioButtonGroup({
 
 	return (
 		<div className="radio-buttons-container flex items-center space-x-6">
-			{["live", "scheduled", "ended"].map((status) => (
+			{["live", "upcoming", "ended"].map((status) => (
 				<div
 					key={status}
 					className="radio-button relative inline-block cursor-pointer"
@@ -35,10 +35,12 @@ function RadioButtonGroup({
 							value={status}
 							className="radio-button__input absolute opacity-0 w-0 h-0 peer"
 							checked={selectedStatus === status}
-							onChange={() => onStatusSelect(status)}
+							onChange={() =>
+								onStatusSelect(status as "live" | "upcoming" | "ended")
+							}
 						/>
 						<span className="radio-button__custom absolute top-1/2 left-0 transform -translate-y-1/2 w-5 h-5 border-2 border-black rounded-full transition-all duration-300 peer-checked:w-3 peer-checked:h-3 peer-checked:bg-red-500" />
-						{getStatusLabel(status)}
+						{getStatusLabel(status as "live" | "upcoming" | "ended")}
 					</label>
 				</div>
 			))}

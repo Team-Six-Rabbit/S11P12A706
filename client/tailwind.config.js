@@ -4,14 +4,14 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				orange: '#F66C23',
-				blue: '#0B68EC',
-				yellow: '#FBCA27',
-				olive: '#B4CC38',
+				orange: "#F66C23",
+				blue: "#0B68EC",
+				yellow: "#FBCA27",
+				olive: "#B4CC38",
 			},
 			scale: {
-        '120': '1.2',
-      },
+				"120": "1.2",
+			},
 		},
 	},
 	plugins: [],

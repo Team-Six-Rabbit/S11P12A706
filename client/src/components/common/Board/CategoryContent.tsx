@@ -1,6 +1,6 @@
-import { useState } from "react";
-import BoardHeader from "./BoardHeader";
-import Card from "./Card";
+import { useState, useEffect } from "react";
+import BoardHeader from "@/components/common/Board/BoardHeader";
+import Card from "@/components/common/Board/Card";
 
 interface Category {
 	id: string;
@@ -13,52 +13,99 @@ interface CategoryContentProps {
 	handleCategorySelect: (category: string) => void;
 }
 
+interface CardType {
+	id: string;
+	image: string;
+	title: string;
+	description: string;
+	status: "live" | "upcoming" | "ended";
+	viewers: number;
+	liveTime?: string; // 라이브 진행 시간 추가
+}
+
 function CategoryContent({
 	categories,
 	selectedCategory,
 	handleCategorySelect,
 }: CategoryContentProps) {
-	const [selectedStatus, setSelectedStatus] = useState<string>("live");
+	const [selectedStatus, setSelectedStatus] = useState<
+		"live" | "upcoming" | "ended"
+	>("live");
 
-	const handleStatusSelect = (status: string) => {
+	const [filteredCards, setFilteredCards] = useState<CardType[]>([]);
+
+	const handleStatusSelect = (status: "live" | "upcoming" | "ended") => {
 		setSelectedStatus(status);
 	};
 
-	// Sample data for the cards with unique IDs
-	const sampleCards = [
-		{
-			id: "1",
-			image: "https://picsum.photos/400/400",
-			title: "A 주장 VS B 주장",
-			description: "대결자 A",
-			status: "라이브",
-			viewers: 32,
-		},
-		{
-			id: "2",
-			image: "https://picsum.photos/400/400",
-			title: "A 주장 VS B 주장",
-			description: "대결자 A",
-			status: "라이브",
-			viewers: 32,
-		},
-		{
-			id: "3",
-			image: "https://picsum.photos/400/400",
-			title: "A 주장 VS B 주장",
-			description: "대결자 A",
-			status: "라이브",
-			viewers: 32,
-		},
-		{
-			id: "4",
-			image: "https://picsum.photos/400/400",
-			title: "A 주장 VS B 주장",
-			description: "대결자 A",
-			status: "라이브",
-			viewers: 32,
-		},
-	];
+	useEffect(() => {
+		const sampleCards: CardType[] = [
+			{
+				id: "1",
+				image: "https://picsum.photos/400/400",
+				title: "A 주장 VS B 주장",
+				description: "대결자 A",
+				status: "live",
+				viewers: 32,
+			},
+			{
+				id: "2",
+				image: "https://picsum.photos/400/400",
+				title: "A 주장 VS B 주장",
+				description: "대결자 A",
+				status: "upcoming",
+				viewers: 32,
+				liveTime: "2024.07.12 14:00",
+			},
+			{
+				id: "3",
+				image: "https://picsum.photos/400/400",
+				title: "A 주장 VS B 주장",
+				description: "대결자 A",
+				status: "upcoming",
+				viewers: 32,
+				liveTime: "2024.07.13 14:00",
+			},
+			{
+				id: "4",
+				image: "https://picsum.photos/400/400",
+				title: "A 주장 VS B 주장",
+				description: "대결자 A",
+				status: "upcoming",
+				viewers: 32,
+				liveTime: "2024.07.14 14:00",
+			},
+			{
+				id: "5",
+				image: "https://picsum.photos/400/400",
+				title: "A 주장 VS B 주장",
+				description: "대결자 A",
+				status: "upcoming",
+				viewers: 32,
+				liveTime: "2024.07.15 14:00",
+			},
+			{
+				id: "6",
+				image: "https://picsum.photos/400/400",
+				title: "A 주장 VS B 주장",
+				description: "대결자 A",
+				status: "ended",
+				viewers: 32,
+			},
+			{
+				id: "7",
+				image: "https://picsum.photos/400/400",
+				title: "A 주장 VS B 주장",
+				description: "대결자 A",
+				status: "live",
+				viewers: 32,
+			},
+		];
+
+		setFilteredCards(
+			sampleCards.filter((card) => card.status === selectedStatus),
+		);
+	}, [selectedStatus]);
 
 	return (
 		<div className="p-10 pt-20">
@@ -70,17 +117,8 @@ function CategoryContent({
 				selectedStatus={selectedStatus}
 				onStatusSelect={handleStatusSelect}
 			/>
-			{/* <div className="mt-4">
-				<div className="flex justify-between items-center mt-4">
-					<h2 className="text-xl">현재 선택된 카테고리: #{selectedCategory}</h2>
-					<RadioButtonGroup
-						selectedStatus={selectedStatus}
-						onStatusSelect={handleStatusSelect}
-					/>
-				</div>
-			</div> */}
 			<div className="mt-4 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-				{sampleCards.map((card) => (
+				{filteredCards.map((card, index) => (
 					<Card
 						key={card.id}
 						image={card.image}
@@ -88,18 +126,8 @@ function CategoryContent({
 						description={card.description}
 						status={card.status}
 						viewers={card.viewers}
-					/>
-				))}
-			</div>
-			<div className="mt-4 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-				{sampleCards.map((card) => (
-					<Card
-						key={card.id}
-						image={card.image}
-						title={card.title}
-						description={card.description}
-						status={card.status}
-						viewers={card.viewers}
+						liveTime={card.liveTime} // liveTime을 전달
+						index={index} // index 값을 전달
 					/>
 				))}
 			</div>
