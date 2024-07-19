@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.woowahanrabbits.battle_people.domain.BalanceGame.dto.BalanceGameCommentDto;
 import com.woowahanrabbits.battle_people.domain.BalanceGame.service.BalanceGameService;
 import com.woowahanrabbits.battle_people.domain.battle.domain.BattleBoard;
 import com.woowahanrabbits.battle_people.domain.battle.dto.BattleReturnDto;
@@ -47,6 +48,19 @@ public class BalanceGameController {
 	@Operation(summary = "밸런스 게임을 삭제합니다.")
 	public ResponseEntity<?> deleteBalanceGame(@RequestParam Long id) {
 		balanceGameService.deleteBalanceGame(id);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@GetMapping("/comment")
+	@Operation(summary = "특정 밸런스 게임에 대한 댓글을 불러옵니다.")
+	public ResponseEntity<?> getCommentListByBattleId(@RequestParam Long id, @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+		return new ResponseEntity<>(balanceGameService.getCommentsByBattleId(id, pageable), HttpStatus.OK);
+	}
+
+	@PostMapping("/comment")
+	@Operation(summary = "특정 밸런스 게임에 댓글을 작성합니다.")
+	public ResponseEntity<?> addComment(@RequestBody BalanceGameCommentDto balanceGameCommentDto) {
+		balanceGameService.addComment(balanceGameCommentDto);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

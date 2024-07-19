@@ -7,9 +7,11 @@ import com.woowahanrabbits.battle_people.domain.user.domain.User;
 import com.woowahanrabbits.battle_people.domain.vote.domain.VoteInfo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -19,6 +21,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Builder
 public class BattleBoard {
 
     @Id
@@ -53,7 +56,8 @@ public class BattleBoard {
     @JoinColumn(name = "room_id")
     private Room room;
 
-    @PrePersist
+
+	@PrePersist
     protected void onCreate() {
         this.registDate = new Date();
     }

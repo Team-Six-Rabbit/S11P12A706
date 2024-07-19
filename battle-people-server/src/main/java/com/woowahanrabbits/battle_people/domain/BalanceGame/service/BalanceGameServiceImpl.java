@@ -4,8 +4,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.woowahanrabbits.battle_people.domain.BalanceGame.domain.BalanceGameBoardComment;
+import com.woowahanrabbits.battle_people.domain.BalanceGame.dto.BalanceGameCommentDto;
+import com.woowahanrabbits.battle_people.domain.BalanceGame.infrastructure.BalanceGameRepository;
+import com.woowahanrabbits.battle_people.domain.battle.domain.BattleBoard;
 import com.woowahanrabbits.battle_people.domain.battle.dto.BattleReturnDto;
 import com.woowahanrabbits.battle_people.domain.battle.infrastructure.BattleRepository;
+import com.woowahanrabbits.battle_people.domain.user.domain.User;
 import com.woowahanrabbits.battle_people.domain.vote.domain.VoteOpinion;
 import com.woowahanrabbits.battle_people.domain.vote.infrastructure.VoteInfoRepository;
 import com.woowahanrabbits.battle_people.domain.vote.infrastructure.VoteOpinionRepository;
@@ -16,12 +21,14 @@ public class BalanceGameServiceImpl implements BalanceGameService {
 	private final VoteInfoRepository voteInfoRepository;
 	private final VoteOpinionRepository voteOpinionRepository;
 	private final BattleRepository battleRepository;
+	private final BalanceGameRepository balanceGameRepository;
 
 	public BalanceGameServiceImpl(VoteInfoRepository voteInfoRepository, VoteOpinionRepository voteOpinionRepository,
-		BattleRepository battleRepository) {
+		BattleRepository battleRepository, BalanceGameRepository balanceGameRepository) {
 		this.voteInfoRepository = voteInfoRepository;
 		this.voteOpinionRepository = voteOpinionRepository;
 		this.battleRepository = battleRepository;
+		this.balanceGameRepository = balanceGameRepository;
 	}
 
 	@Override
@@ -46,5 +53,24 @@ public class BalanceGameServiceImpl implements BalanceGameService {
 	@Override
 	public void deleteBalanceGame(Long id) {
 		battleRepository.deleteById(id);
+	}
+
+	@Override
+	public Page<?> getCommentsByBattleId(Long id, Pageable pageable) {
+		Page<BalanceGameCommentDto> pages = balanceGameRepository.findCommentsByBattleBoardId(id, pageable);
+		System.out.println(pages.toList().toString());
+		return pages;
+	}
+
+	@Override
+	public void addComment(BalanceGameCommentDto balanceGameCommentDto) {
+
+		BalanceGameBoardComment bgbcomment = BalanceGameBoardComment.builder()
+			.user(balanceGameCommentDto.getUser())
+			.content(balanceGameCommentDto.getContent())
+			.battleBoard(BattleBoard.builder().id(balanceGameCommentDto.getBattleBoardId()).build())
+			.build();
+
+		balanceGameRepository.save(bgbcomment);
 	}
 }
