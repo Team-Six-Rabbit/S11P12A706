@@ -19,5 +19,5 @@ public class Room {
     private String roomId;
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<LiveApplyUser> participants = new HashSet<>();
+    private final Set<LiveApplyUser> participants = new HashSet<>();
 }
