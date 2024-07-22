@@ -3,6 +3,7 @@ package com.woowahanrabbits.battle_people.domain.BalanceGame.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.woowahanrabbits.battle_people.domain.API.dto.APIResponseDto;
 import com.woowahanrabbits.battle_people.domain.BalanceGame.dto.BalanceGameCommentDto;
 import com.woowahanrabbits.battle_people.domain.BalanceGame.service.BalanceGameService;
 import com.woowahanrabbits.battle_people.domain.battle.domain.BattleBoard;
@@ -48,15 +50,14 @@ public class BalanceGameController {
 
 	@GetMapping("")
 	@Operation(summary = "[점화] 카테고리 별, 진행 상태 별 밸런스 게임 조회 ")
-	public ResponseEntity<?> getBalanceGameByConditions(@RequestParam int category,
+	public ResponseEntity<?> getBalanceGameByConditions(@RequestParam(defaultValue = "") Integer category,
 		@RequestParam(defaultValue = "5") int status, @RequestParam int page,
 		@RequestParam int userId) {
 		User user = new User();
 		user.setId(userId);
-		List<BalanceGameReturnDto> list = balanceGameService.getBalanceGameByConditions(category, 5, 1, user);
+		Page<BalanceGameReturnDto> list = balanceGameService.getBalanceGameByConditions(category, status, page, user);
 
-		return new ResponseEntity<>(HttpStatus.OK);
-		// return new ResponseEntity<>(balanceGameService.getBalanceGameByConditions(category, status), HttpStatus.OK);
+		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
 	@PatchMapping("")
@@ -88,5 +89,9 @@ public class BalanceGameController {
 	// @Operation(summary = "특정 밸런스 게임 내 댓글을 삭제합니다.")
 	// public ResponseEntity<?> deleteComment(@Request ) {
 	//
+	// }
+
+	// public APIResponseDto<T> toAPIResponseDTO(String code, String msg, T data) {
+	// 	return new APIResponseDto<T>(code, msg, data);
 	// }
 }

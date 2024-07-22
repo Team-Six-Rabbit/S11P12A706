@@ -13,7 +13,7 @@ import com.woowahanrabbits.battle_people.domain.user.domain.User;
 public interface BalanceGameService {
 	void addBalanceGame(BattleReturnDto battleReturnDto);
 
-	List<BalanceGameReturnDto> getBalanceGameByConditions(int category, int status, int page, User user);
+	Page<BalanceGameReturnDto> getBalanceGameByConditions(Integer category, int status, int page, User user);
 
 	void deleteBalanceGame(Long id);
 

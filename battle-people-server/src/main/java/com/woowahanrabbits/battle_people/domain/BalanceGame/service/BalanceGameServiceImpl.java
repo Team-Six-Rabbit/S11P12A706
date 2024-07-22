@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,6 @@ import com.woowahanrabbits.battle_people.domain.user.domain.User;
 import com.woowahanrabbits.battle_people.domain.vote.domain.VoteOpinion;
 import com.woowahanrabbits.battle_people.domain.battle.dto.BalanceGameReturnDto;
 import com.woowahanrabbits.battle_people.domain.vote.dto.VoteOpinionDto;
-import com.woowahanrabbits.battle_people.domain.vote.infrastructure.UserVoteOpinionRepository;
 import com.woowahanrabbits.battle_people.domain.vote.infrastructure.VoteInfoRepository;
 import com.woowahanrabbits.battle_people.domain.vote.infrastructure.VoteOpinionRepository;
 
@@ -30,16 +30,13 @@ public class BalanceGameServiceImpl implements BalanceGameService {
 	private final VoteOpinionRepository voteOpinionRepository;
 	private final BattleRepository battleRepository;
 	private final BalanceGameRepository balanceGameRepository;
-	private final UserVoteOpinionRepository userVoteOpinionRepository;
 
 	public BalanceGameServiceImpl(VoteInfoRepository voteInfoRepository, VoteOpinionRepository voteOpinionRepository,
-		BattleRepository battleRepository, BalanceGameRepository balanceGameRepository,
-		UserVoteOpinionRepository userVoteOpinionRepository) {
+		BattleRepository battleRepository, BalanceGameRepository balanceGameRepository) {
 		this.voteInfoRepository = voteInfoRepository;
 		this.voteOpinionRepository = voteOpinionRepository;
 		this.battleRepository = battleRepository;
 		this.balanceGameRepository = balanceGameRepository;
-		this.userVoteOpinionRepository = userVoteOpinionRepository;
 	}
 
 	@Override
@@ -57,9 +54,15 @@ public class BalanceGameServiceImpl implements BalanceGameService {
 	}
 
 	@Override
-	public List<BalanceGameReturnDto> getBalanceGameByConditions(int category, int status, int page, User user) {
+	public Page<BalanceGameReturnDto> getBalanceGameByConditions(Integer category, int status, int page, User user) {
 		Pageable pageable = PageRequest.of(page, 12);
-		List<Object[]> list = userVoteOpinionRepository.findAllVotesWithCountsAndUserVoteStatus(user.getId());
+		List<Object[]> list = null;
+		//category가 있는지 체크
+		if(category == null) {
+			list = voteInfoRepository.findAllByStatus(status);
+		} else {
+			list = voteInfoRepository.findAllByCategoryAndStatus(category, status);
+		}
 		System.out.println(list.toString());
 
 		List<BalanceGameReturnDto> dtoResults = new ArrayList<>();
@@ -74,18 +77,22 @@ public class BalanceGameServiceImpl implements BalanceGameService {
 			int voteCount = ((Number) result[3]).intValue();
 			Date startDate = (Date) result[4];
 			Date endDate = (Date) result[5];
+			int categoryId = ((Number) result[6]).intValue();
+			int currentStatus = ((Number) result[7]).intValue();
 
 			if (!battleId.equals(currentBattleId)) {
 				currentBattleId = battleId;
 				currentOpinions = new ArrayList<>();
-				currentDto = new BalanceGameReturnDto(battleId, title, currentOpinions, startDate, endDate);
+				currentDto = new BalanceGameReturnDto(battleId, title, currentOpinions,startDate,endDate,categoryId,currentStatus);
 				dtoResults.add(currentDto);
 			}
 
 			currentOpinions.add(new VoteOpinionDto(opinion, voteCount));
 		}
 
-		return dtoResults;
+		Page<BalanceGameReturnDto> pages = new PageImpl<>(dtoResults, pageable, dtoResults.size());
+
+		return pages;
 	}
 
 	@Override
