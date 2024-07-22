@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --mode test",
     "build": "tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx,js,jsx --report-unused-disable-directives",
     "lint:fix": "eslint . --ext ts,tsx,js,jsx --report-unused-disable-directives --fix",
@@ -23,6 +23,10 @@
     }
   },
   "dependencies": {
+    "@headlessui/react": "^2.1.2",
+    "axios": "^1.7.2",
+    "classnames": "^2.5.1",
+    "dotenv": "^16.4.5",
     "eslint-import-resolver-typescript": "^3.6.1",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",
