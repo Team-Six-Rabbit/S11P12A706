@@ -1,5 +1,7 @@
 package com.woowahanrabbits.battle_people.domain.BalanceGame.infrastructure;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,5 +17,5 @@ public interface BalanceGameRepository extends JpaRepository<BalanceGameBoardCom
 	@Query("SELECT new com.woowahanrabbits.battle_people.domain.BalanceGame.dto.BalanceGameCommentDto(b.id, b.battleBoard.id, b.user, b.content, b.registDate) " +
 		"FROM BalanceGameBoardComment b " +
 		"WHERE b.battleBoard.id = :battleBoardId")
-	Page<BalanceGameCommentDto> findCommentsByBattleBoardId(@Param("battleBoardId") Long battleBoardId, Pageable pageable);
+	List<BalanceGameCommentDto> findCommentsByBattleBoardId(@Param("battleBoardId") Long battleBoardId);
 }

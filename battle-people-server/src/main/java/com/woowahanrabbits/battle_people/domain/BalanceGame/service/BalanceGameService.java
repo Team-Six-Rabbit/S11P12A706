@@ -17,7 +17,7 @@ public interface BalanceGameService {
 
 	void deleteBalanceGame(Long id);
 
-	Page<?> getCommentsByBattleId(Long id, Pageable pageable);
+	Page<?> getCommentsByBattleId(Long id, int page, int totalPage);
 
 	void addComment(BalanceGameCommentDto balanceGameCommentDto);
 }

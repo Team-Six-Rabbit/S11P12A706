@@ -74,8 +74,8 @@ public class BalanceGameController {
 
 	@GetMapping("/comment")
 	@Operation(summary = "특정 밸런스 게임에 대한 댓글을 불러옵니다.")
-	public ResponseEntity<?> getCommentListByBattleId(@RequestParam Long id, @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-		return new ResponseEntity<>(balanceGameService.getCommentsByBattleId(id, pageable), HttpStatus.OK);
+	public ResponseEntity<?> getCommentListByBattleId(@RequestParam Long id, @RequestParam int page, @RequestParam int totalPage) {
+		return new ResponseEntity<>(balanceGameService.getCommentsByBattleId(id, page, totalPage), HttpStatus.OK);
 	}
 
 	@PostMapping("/comment")

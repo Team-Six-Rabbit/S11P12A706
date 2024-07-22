@@ -101,10 +101,10 @@ public class BalanceGameServiceImpl implements BalanceGameService {
 	}
 
 	@Override
-	public Page<?> getCommentsByBattleId(Long id, Pageable pageable) {
-		Page<BalanceGameCommentDto> pages = balanceGameRepository.findCommentsByBattleBoardId(id, pageable);
-		System.out.println(pages.toList().toString());
-		return pages;
+	public Page<BalanceGameCommentDto> getCommentsByBattleId(Long id, int page, int totalPage) {
+		List<BalanceGameCommentDto> list = balanceGameRepository.findCommentsByBattleBoardId(id);
+		Pageable pageable = PageRequest.of(page, totalPage);
+		return new PageImpl<>(list, pageable, list.size());
 	}
 
 	@Override
