@@ -1,4 +1,4 @@
-package com.woowahanrabbits.battle_people.domain.user.config;
+package com.woowahanrabbits.battle_people.config;
 
 import java.util.Collections;
 
@@ -38,16 +38,6 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return authenticationConfiguration.getAuthenticationManager();
-	}
-
-	@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-
-	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.cors(cors -> cors
 			.configurationSource(request -> {
@@ -78,5 +68,15 @@ public class SecurityConfig {
 		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
 		return http.build();
+	}
+
+	@Bean
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
+	}
+
+	@Bean
+	public BCryptPasswordEncoder bCryptPasswordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 }

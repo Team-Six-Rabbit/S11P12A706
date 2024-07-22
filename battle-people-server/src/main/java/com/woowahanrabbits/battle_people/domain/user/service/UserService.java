@@ -43,4 +43,6 @@ public class UserService {
 		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
 		return authenticationManager.authenticate(authToken);
 	}
+
+
 }

@@ -36,11 +36,14 @@ public class AuthController {
 	private final RefreshRepository refreshRepository;
 
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody JoinDTO joinDTO, HttpServletRequest request, HttpServletResponse response) {
+	public ResponseEntity<?> login(@RequestBody JoinDTO joinDTO, HttpServletRequest request,
+		HttpServletResponse response) {
 		// CustomAuthenticationFilter에 의해 인증이 처리됩니다.
 		Authentication authentication = userService.authenticate(joinDTO.getEmail(), joinDTO.getPassword());
+
+		System.out.println("joinDTO = " + joinDTO);
 		if (authentication != null && authentication.isAuthenticated()) {
-			CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+			CustomUserDetails customUserDetails = (CustomUserDetails)authentication.getPrincipal();
 
 			String username = customUserDetails.getUsername();
 
@@ -60,15 +63,16 @@ public class AuthController {
 			response.addCookie(createCookie("access", access, "/"));
 			response.addCookie(createCookie("refresh", refresh, "/auth/refresh"));
 			response.setStatus(HttpStatus.OK.value());
+			// System.out.println("login success");
 			return new ResponseEntity<>("LOGIN SUCCESS", HttpStatus.OK);
-		} else {
-			response.setStatus(HttpStatus.UNAUTHORIZED.value());
-			return new ResponseEntity<>("LOGIN FAILED", HttpStatus.UNAUTHORIZED);
 		}
+		response.setStatus(HttpStatus.UNAUTHORIZED.value());
+		System.out.println("FAILED TO LOGIN");
+		return new ResponseEntity<>("LOGIN FAILED", HttpStatus.UNAUTHORIZED);
 	}
 
 	@PostMapping("/refresh")
-	public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
+	public ResponseEntity<?> refresh(HttpServletRequest request, HttpServletResponse response) {
 		// get refresh token
 		String refresh = null;
 		Cookie[] cookies = request.getCookies();

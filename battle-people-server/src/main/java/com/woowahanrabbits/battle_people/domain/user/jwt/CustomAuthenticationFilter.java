@@ -1,11 +1,15 @@
 package com.woowahanrabbits.battle_people.domain.user.jwt;
 
+import java.io.IOException;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -19,12 +23,20 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 	}
 
 	@Override
-	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws
+		AuthenticationException {
 		String username = obtainUsername(request);
 		String password = obtainPassword(request);
 
-		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
+		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password,
+			null);
 
 		return authenticationManager.authenticate(authToken);
 	}
+
+	// @Override
+	// protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+	// 	Authentication authResult) throws IOException, ServletException {
+	// 	super.successfulAuthentication(request, response, chain, authResult);
+	// }
 }
