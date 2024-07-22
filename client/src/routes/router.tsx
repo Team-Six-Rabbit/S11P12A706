@@ -14,7 +14,7 @@ const router = createBrowserRouter([
 		element: <LoginPage />,
 	},
 	{
-		path: "/live-board",
+		path: "/firework",
 		element: <LiveBoardPage />,
 	},
 ]);

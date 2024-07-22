@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import BoardHeader from "@/components/common/Board/BoardHeader";
 import Card from "@/components/common/Board/Card";
+import Carousel from "@/components/common/Board/Carousel";
 
 interface Category {
 	id: string;
@@ -20,7 +21,7 @@ interface CardType {
 	description: string;
 	status: "live" | "upcoming" | "ended";
 	viewers: number;
-	liveTime?: string; // 라이브 진행 시간 추가
+	liveTime?: string;
 }
 
 function CategoryContent({
@@ -31,7 +32,6 @@ function CategoryContent({
 	const [selectedStatus, setSelectedStatus] = useState<
 		"live" | "upcoming" | "ended"
 	>("live");
-
 	const [filteredCards, setFilteredCards] = useState<CardType[]>([]);
 
 	const handleStatusSelect = (status: "live" | "upcoming" | "ended") => {
@@ -117,6 +117,17 @@ function CategoryContent({
 				selectedStatus={selectedStatus}
 				onStatusSelect={handleStatusSelect}
 			/>
+			{selectedStatus === "live" && (
+				<div
+					style={{
+						display: "flex",
+						justifyContent: "center",
+						marginBottom: "2rem",
+					}}
+				>
+					<Carousel />
+				</div>
+			)}
 			<div className="mt-4 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
 				{filteredCards.map((card, index) => (
 					<Card
@@ -126,8 +137,8 @@ function CategoryContent({
 						description={card.description}
 						status={card.status}
 						viewers={card.viewers}
-						liveTime={card.liveTime} // liveTime을 전달
-						index={index} // index 값을 전달
+						liveTime={card.liveTime}
+						index={index}
 					/>
 				))}
 			</div>
