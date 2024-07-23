@@ -7,8 +7,10 @@ import org.springframework.data.domain.Pageable;
 
 import com.woowahanrabbits.battle_people.domain.BalanceGame.dto.BalanceGameCommentDto;
 import com.woowahanrabbits.battle_people.domain.battle.dto.BalanceGameReturnDto;
+import com.woowahanrabbits.battle_people.domain.battle.dto.BattleApplyDto;
 import com.woowahanrabbits.battle_people.domain.battle.dto.BattleReturnDto;
 import com.woowahanrabbits.battle_people.domain.user.domain.User;
+import com.woowahanrabbits.battle_people.domain.vote.domain.UserVoteOpinion;
 
 public interface BalanceGameService {
 	void addBalanceGame(BattleReturnDto battleReturnDto);
@@ -20,4 +22,6 @@ public interface BalanceGameService {
 	Page<?> getCommentsByBattleId(Long id, int page, int totalPage);
 
 	void addComment(BalanceGameCommentDto balanceGameCommentDto);
+
+	List<UserVoteOpinion> getUserVotelist(User user);
 }

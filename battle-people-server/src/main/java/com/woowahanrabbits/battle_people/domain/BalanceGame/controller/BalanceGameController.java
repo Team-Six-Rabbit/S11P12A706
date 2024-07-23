@@ -1,6 +1,8 @@
 package com.woowahanrabbits.battle_people.domain.BalanceGame.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,8 +25,10 @@ import com.woowahanrabbits.battle_people.domain.BalanceGame.dto.BalanceGameComme
 import com.woowahanrabbits.battle_people.domain.BalanceGame.service.BalanceGameService;
 import com.woowahanrabbits.battle_people.domain.battle.domain.BattleBoard;
 import com.woowahanrabbits.battle_people.domain.battle.dto.BalanceGameReturnDto;
+import com.woowahanrabbits.battle_people.domain.battle.dto.BattleApplyDto;
 import com.woowahanrabbits.battle_people.domain.battle.dto.BattleReturnDto;
 import com.woowahanrabbits.battle_people.domain.user.domain.User;
+import com.woowahanrabbits.battle_people.domain.vote.domain.UserVoteOpinion;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -55,14 +59,22 @@ public class BalanceGameController {
 
 	@GetMapping("")
 	@Operation(summary = "[점화] 카테고리 별, 진행 상태 별 밸런스 게임 조회 ")
-	public ResponseEntity<APIResponseDto<Page>> getBalanceGameByConditions(@RequestParam(defaultValue = "") Integer category,
+	public ResponseEntity<APIResponseDto<Map<String, Object>>> getBalanceGameByConditions(@RequestParam(defaultValue = "") Integer category,
 		@RequestParam(defaultValue = "5") int status, @RequestParam int page,
 		@RequestParam int userId) {
 		User user = new User();
 		user.setId(userId);
 		try{
+			//페이지 내 밸런스게임 리스트
 			Page<BalanceGameReturnDto> list = balanceGameService.getBalanceGameByConditions(category, status, page, user);
-			return ResponseEntity.status(HttpStatus.OK).body(new APIResponseDto<>("success", "",  list));
+			Map<String, Object> map = new HashMap<>();
+			map.put("page", list);
+
+			//유저가 투표한 내역
+			List<UserVoteOpinion> userVote = balanceGameService.getUserVotelist(user);
+			map.put("userVoteList", userVote);
+
+			return ResponseEntity.status(HttpStatus.OK).body(new APIResponseDto<>("success", "",  map));
 
 		} catch (Exception e){
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new APIResponseDto<>("fail", "internal server error", null));
