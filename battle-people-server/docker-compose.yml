@@ -23,9 +23,9 @@ services:
   nginx:
     image: nginx:latest
     volumes:
-      - /c/Users/SSAFY/Desktop/S11P12A706/battle-people-server/nginx.conf:/etc/nginx/nginx.conf
-      - /c/Users/SSAFY/Desktop/S11P12A706/battle-people-server/ssl/certificate.crt:/etc/nginx/ssl/certificate.crt
-      - /c/Users/SSAFY/Desktop/S11P12A706/battle-people-server/ssl/private.key:/etc/nginx/ssl/private.key
+      - C:/Users/SSAFY/Desktop/S11P12A706/battle-people-server/nginx.conf:/etc/nginx/nginx.conf
+      - C:/Users/SSAFY/Desktop/S11P12A706/battle-people-server/ssl/certificate.crt:/etc/nginx/ssl/certificate.crt
+      - C:/Users/SSAFY/Desktop/S11P12A706/battle-people-server/ssl/private.key:/etc/nginx/ssl/private.key
     ports:
       - "80:80"
       - "443:443"
