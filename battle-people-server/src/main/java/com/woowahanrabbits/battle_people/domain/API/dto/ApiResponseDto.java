@@ -1,4 +1,4 @@
-package com.woowahanrabbits.battle_people.domain.user.dto;
+package com.woowahanrabbits.battle_people.domain.API.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
