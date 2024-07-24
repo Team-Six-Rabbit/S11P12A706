@@ -6,7 +6,6 @@ import com.woowahanrabbits.battle_people.domain.user.domain.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
