@@ -1,9 +1,13 @@
 package com.woowahanrabbits.battle_people.domain.vote.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class VoteOpinionId {
+@AllArgsConstructor
+public class VoteOpinionId implements Serializable {
     private int voteOpinionIndex;
     private Long voteInfoId;
 
