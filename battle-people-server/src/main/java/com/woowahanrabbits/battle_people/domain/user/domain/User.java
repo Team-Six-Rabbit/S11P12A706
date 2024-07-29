@@ -36,4 +36,5 @@ public class User {
 	private String accessToken;
 	private LocalDate penaltyStartDate;
 	private LocalDate penaltyEndDate;
+
 }

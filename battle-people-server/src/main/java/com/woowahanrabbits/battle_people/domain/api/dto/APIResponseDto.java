@@ -1,4 +1,4 @@
-package com.woowahanrabbits.battle_people.domain.API.dto;
+package com.woowahanrabbits.battle_people.domain.api.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,10 +8,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class APIResponseDto<T> {
-    private String code;
+	private String code;
 
-    private String msg;
+	private String msg;
 
-    private T data;
+	private T data;
 
 }
