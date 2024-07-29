@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface VoteOpinionRepository extends JpaRepository<VoteOpinion, VoteOpinionId> {
-    List<VoteOpinion> findByVoteInfoId(Long voteInfoId);
+    List<VoteOpinion> findAllByVoteInfoId(Long voteInfoId);
 
 }
