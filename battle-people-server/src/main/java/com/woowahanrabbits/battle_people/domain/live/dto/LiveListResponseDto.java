@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LiveListResponseDto {
+
 	private Long id;
 	private String roomId;
 

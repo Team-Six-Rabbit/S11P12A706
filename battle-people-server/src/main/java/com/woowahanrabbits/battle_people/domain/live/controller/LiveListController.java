@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.woowahanrabbits.battle_people.domain.api.dto.APIResponseDto;
+import com.woowahanrabbits.battle_people.domain.api_response.dto.APIResponseDto;
 import com.woowahanrabbits.battle_people.domain.live.dto.LiveEndDetailDto;
 import com.woowahanrabbits.battle_people.domain.live.dto.LiveListResponseDto;
 import com.woowahanrabbits.battle_people.domain.live.service.LiveListService;
@@ -25,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @RequestMapping("/live")
 public class LiveListController {
+
 	private final LiveListService liveListService;
 
 	@GetMapping("/active/list")
@@ -104,4 +105,5 @@ public class LiveListController {
 				.body(new APIResponseDto<>("fail", "internal server error", null));
 		}
 	}
+
 }

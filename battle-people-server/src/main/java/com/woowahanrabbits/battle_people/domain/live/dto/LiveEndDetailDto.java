@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LiveEndDetailDto {
+
 	private Long id;
 
 	private String title;
@@ -38,4 +39,5 @@ public class LiveEndDetailDto {
 		int percentageRegisterOpinion;
 		int percentageOppositeOpinion;
 	}
+
 }
