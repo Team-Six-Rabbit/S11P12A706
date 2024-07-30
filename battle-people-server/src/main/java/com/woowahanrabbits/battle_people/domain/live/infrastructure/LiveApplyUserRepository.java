@@ -9,6 +9,6 @@ import com.woowahanrabbits.battle_people.domain.live.domain.LiveApplyUser;
 public interface LiveApplyUserRepository extends JpaRepository<LiveApplyUser, Long> {
 	List<LiveApplyUser> findAllByRoom_Id(Long id);
 
-	List<LiveApplyUser> findByRoomId(String roomId);
+	LiveApplyUser findByRoomIdAndParticipantId(Long roomId, Long participantId);
 
 }
