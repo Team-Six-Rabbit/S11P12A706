@@ -19,7 +19,7 @@ public class LiveEndDetailDto {
 	private VoteResult preResult;
 	private VoteResult finalResult;
 
-	private String category;
+	private int category;
 	private String imageUri;
 	private String summary;
 

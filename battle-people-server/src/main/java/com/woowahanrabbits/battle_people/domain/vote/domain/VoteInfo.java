@@ -26,6 +26,6 @@ public class VoteInfo {
 	private String title;
 	private Date startDate;
 	private Date endDate;
-	private String category;
+	private int category;
 
 }

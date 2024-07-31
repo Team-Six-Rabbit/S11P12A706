@@ -33,7 +33,6 @@ public class User {
 
 	@Column(nullable = false)
 	private int rating;
-	private String accessToken;
 	private LocalDate penaltyStartDate;
 	private LocalDate penaltyEndDate;
 
