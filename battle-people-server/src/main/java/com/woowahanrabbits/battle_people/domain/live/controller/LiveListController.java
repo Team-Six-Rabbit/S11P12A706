@@ -17,6 +17,7 @@ import com.woowahanrabbits.battle_people.domain.live.dto.LiveEndDetailDto;
 import com.woowahanrabbits.battle_people.domain.live.dto.LiveListResponseDto;
 import com.woowahanrabbits.battle_people.domain.live.service.LiveListService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,6 +30,7 @@ public class LiveListController {
 	private final LiveListService liveListService;
 
 	@GetMapping("/active/list")
+	@Operation(summary = "[활활] 라이브 진행중인 토론 리스트 조회")
 	public ResponseEntity<ApiResponseDto<List<LiveListResponseDto>>> getActiveLiveList(
 		@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
 		@RequestParam(value = "category", required = false, defaultValue = "") Integer category,
@@ -46,6 +48,7 @@ public class LiveListController {
 	}
 
 	@GetMapping("/wait/list")
+	@Operation(summary = "[불꽃] 라이브 예정인 토론 리스트 조회")
 	public ResponseEntity<ApiResponseDto<List<LiveListResponseDto>>> getWaitLiveList(
 		@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
 		@RequestParam(value = "category", required = false, defaultValue = "") Integer category,
@@ -63,6 +66,7 @@ public class LiveListController {
 	}
 
 	@GetMapping("/end/list")
+	@Operation(summary = "[잿더미] 라이브 종료된 토론 리스트 조회")
 	public ResponseEntity<ApiResponseDto<List<LiveListResponseDto>>> getEndBattleBoards(
 		@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
 		@RequestParam(value = "category", required = false, defaultValue = "") Integer category,
@@ -80,6 +84,7 @@ public class LiveListController {
 	}
 
 	@GetMapping("/wait/detail/{battle_id}")
+	@Operation(summary = "[불꽃] 라이브 예정 중인 토론 하나에 대한 상세 정보 조회")
 	public ResponseEntity<ApiResponseDto<LiveListResponseDto>> getWaitLiveInfo(
 		@PathVariable("battle_id") Long battleId) {
 
@@ -94,6 +99,7 @@ public class LiveListController {
 	}
 
 	@GetMapping("/end/detail/{battle_id}")
+	@Operation(summary = "[잿더미] 라이브 종료된 토론 하나에 대한 상세 정보 조회")
 	public ResponseEntity<ApiResponseDto<LiveEndDetailDto>> getEndLiveInfo(@PathVariable("battle_id") Long battleId) {
 
 		try {
