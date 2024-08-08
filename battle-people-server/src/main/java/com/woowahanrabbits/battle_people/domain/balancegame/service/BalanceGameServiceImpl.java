@@ -14,7 +14,7 @@ import com.woowahanrabbits.battle_people.domain.user.domain.User;
 import com.woowahanrabbits.battle_people.domain.vote.domain.UserVoteOpinion;
 import com.woowahanrabbits.battle_people.domain.vote.domain.VoteInfo;
 import com.woowahanrabbits.battle_people.domain.vote.domain.VoteOpinion;
-import com.woowahanrabbits.battle_people.domain.vote.dto.VoteOpinionDto;
+import com.woowahanrabbits.battle_people.domain.vote.dto.VoteOpinionDtoWithVoteCount;
 import com.woowahanrabbits.battle_people.domain.vote.infrastructure.UserVoteOpinionRepository;
 import com.woowahanrabbits.battle_people.domain.vote.infrastructure.VoteInfoRepository;
 import com.woowahanrabbits.battle_people.domain.vote.infrastructure.VoteOpinionRepository;
@@ -79,21 +79,22 @@ public class BalanceGameServiceImpl implements BalanceGameService {
 
 	public BalanceGameResponse convertToBalanceGameResponse(VoteInfo voteInfo, User user) {
 		List<VoteOpinion> voteOpinions = voteOpinionRepository.findByVoteInfoId(voteInfo.getId());
-		List<VoteOpinionDto> voteOpinionDtos = convertToVoteOpinionDtos(voteInfo.getId(), voteOpinions);
+		List<VoteOpinionDtoWithVoteCount> voteOpinionDtos = convertToVoteOpinionDtos(voteInfo.getId(), voteOpinions);
 		BalanceGameResponse bgr = new BalanceGameResponse(voteInfo, voteOpinionDtos);
 		UserVoteOpinion uvo = userVoteOpinionRepository.findByUserIdAndVoteInfoId(user.getId(), voteInfo.getId());
 		bgr.setUserVote(uvo == null ? null : uvo.getVoteInfoIndex());
 		return bgr;
 	}
 
-	private List<VoteOpinionDto> convertToVoteOpinionDtos(Long voteInfoId, List<VoteOpinion> voteOpinions) {
-		List<VoteOpinionDto> voteOpinionDtos = new ArrayList<>();
+	private List<VoteOpinionDtoWithVoteCount> convertToVoteOpinionDtos(Long voteInfoId,
+		List<VoteOpinion> voteOpinions) {
+		List<VoteOpinionDtoWithVoteCount> voteOpinionDtos = new ArrayList<>();
 		int totalVotes = 0;
 		int[] cnt = new int[voteOpinions.size()];
 
 		for (int i = 0; i < voteOpinions.size(); i++) {
 			VoteOpinion vote = voteOpinions.get(i);
-			VoteOpinionDto voteOpinionDto = new VoteOpinionDto(vote);
+			VoteOpinionDtoWithVoteCount voteOpinionDto = new VoteOpinionDtoWithVoteCount(vote);
 			cnt[i] = userVoteOpinionRepository.findByVoteInfoIdAndVoteInfoIndex(voteInfoId, vote.getVoteOpinionIndex())
 				.size();
 			voteOpinionDto.setCount(cnt[i]);

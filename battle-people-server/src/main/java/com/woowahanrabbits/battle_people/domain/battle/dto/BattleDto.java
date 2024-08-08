@@ -1,38 +1,27 @@
 package com.woowahanrabbits.battle_people.domain.battle.dto;
 
-import java.util.Date;
-
-import com.woowahanrabbits.battle_people.domain.battle.domain.BattleBoard;
-import com.woowahanrabbits.battle_people.domain.user.dto.BasicUserDto;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.woowahanrabbits.battle_people.domain.vote.domain.VoteInfo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
+@Builder
 @Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BattleDto {
-	private final Long id;
-	private final BasicUserDto registUser;
-	private final BasicUserDto oppositeUser;
-	private final VoteInfo voteInfo;
-	private final int minPeopleCount;
-	private final int maxPeopleCount;
-	private final String battleRule;
-	private final Date registDate;
-	private final String rejectionReason;
-	private final String imageUrl;
-	private final String liveUri;
+	private Long id;
+	private VoteInfo voteInfo;
+	private int minPeopleCount;
+	private int maxPeopleCount;
+	private String battleRule;
 
-	public BattleDto(BattleBoard battleBoard) {
-		this.id = battleBoard.getId();
-		this.registUser = new BasicUserDto(battleBoard.getRegistUser());
-		this.oppositeUser = new BasicUserDto(battleBoard.getOppositeUser());
-		this.voteInfo = battleBoard.getVoteInfo();
-		this.minPeopleCount = battleBoard.getMinPeopleCount();
-		this.maxPeopleCount = battleBoard.getMaxPeopleCount();
-		this.battleRule = battleBoard.getBattleRule();
-		this.registDate = battleBoard.getRegistDate();
-		this.rejectionReason = battleBoard.getRejectionReason();
-		this.imageUrl = battleBoard.getImageUrl();
-		this.liveUri = battleBoard.getLiveUri();
-	}
 }

@@ -2,23 +2,26 @@ package com.woowahanrabbits.battle_people.domain.battle.dto;
 
 import java.util.List;
 
-import com.woowahanrabbits.battle_people.domain.battle.domain.BattleBoard;
-import com.woowahanrabbits.battle_people.domain.vote.domain.VoteOpinion;
-import com.woowahanrabbits.battle_people.domain.vote.dto.VoteOpinionDto;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.woowahanrabbits.battle_people.domain.vote.dto.BattleOpinionDto;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+@Builder
+@NoArgsConstructor
 @Getter
+@ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BattleResponse {
-	private final BattleDto battle;
-	private final List<VoteOpinionDto> opinions;
+	private BattleDto battle;
+	private List<BattleOpinionDto> opinions;
 
-	public BattleResponse(BattleDto battleDto, List<VoteOpinionDto> opinions) {
+	public BattleResponse(BattleDto battleDto, List<BattleOpinionDto> opinions) {
 		this.battle = battleDto;
 		this.opinions = opinions;
 	}
 
-	public BattleResponse(BattleBoard battleBoard, List<VoteOpinion> opinions) {
-		this(new BattleDto(battleBoard), opinions.stream().map(VoteOpinionDto::new).toList());
-	}
 }

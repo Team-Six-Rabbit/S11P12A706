@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowahanrabbits.battle_people.domain.live.dto.RedisTopicDto;
 import com.woowahanrabbits.battle_people.domain.live.dto.response.WriteChatResponseDto;
 import com.woowahanrabbits.battle_people.domain.live.dto.response.WriteTalkResponseDto;
+import com.woowahanrabbits.battle_people.domain.notify.dto.NotifyResponseDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +50,10 @@ public class RedisSubscriber implements MessageListener {
 					messagingTemplate.convertAndSend("/topic" + type + "/" + battleBoardId,
 						returnValue);
 				}
+			} else if (channel.equals("notify")) {
+				NotifyResponseDto notify = objectMapper.readValue(publishMessage, NotifyResponseDto.class);
+
+				messagingTemplate.convertAndSend("/topic/notify/" + notify.getTargetUser().getId(), notify);
 			}
 
 		} catch (Exception e) {

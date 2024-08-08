@@ -16,7 +16,7 @@ import com.woowahanrabbits.battle_people.domain.battle.dto.AwaitingBattleRespons
 import com.woowahanrabbits.battle_people.domain.battle.dto.BattleApplyDto;
 import com.woowahanrabbits.battle_people.domain.battle.dto.BattleInviteRequest;
 import com.woowahanrabbits.battle_people.domain.battle.dto.BattleRespondRequest;
-import com.woowahanrabbits.battle_people.domain.battle.dto.BattleResponse;
+import com.woowahanrabbits.battle_people.domain.battle.dto.BattleVoteDto;
 import com.woowahanrabbits.battle_people.domain.battle.infrastructure.BattleApplyUserRepository;
 import com.woowahanrabbits.battle_people.domain.battle.infrastructure.BattleRepository;
 import com.woowahanrabbits.battle_people.domain.user.domain.User;
@@ -43,9 +43,10 @@ public class BattleServiceImpl implements BattleService {
 	private Integer minPeopleCount;
 
 	@Override
-	public void registBattle(BattleInviteRequest battleInviteRequest, User user) {
-
+	public BattleVoteDto registBattle(BattleInviteRequest battleInviteRequest, User user) {
+		System.out.println(battleInviteRequest.toString());
 		Date startDate = battleInviteRequest.getStartDate();
+		System.out.println(startDate.toString());
 
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(startDate);
@@ -93,6 +94,9 @@ public class BattleServiceImpl implements BattleService {
 			.build();
 		voteOpinionRepository.save(voteOpinion);
 
+		List<VoteOpinion> voteOpinions = new ArrayList<>();
+		voteOpinions.add(voteOpinion);
+
 		//battle board
 		BattleBoard battleBoard = BattleBoard.builder()
 			.registUser(user)
@@ -102,28 +106,36 @@ public class BattleServiceImpl implements BattleService {
 			.battleRule(battleInviteRequest.getBattleRule())
 			.build();
 		battleRepository.save(battleBoard);
+
+		BattleVoteDto battleVoteDto = BattleVoteDto.builder()
+			.battleBoard(battleBoard)
+			.voteInfo(voteInfo)
+			.voteOpinions(voteOpinions)
+			.build();
+
+		return battleVoteDto;
 	}
 
-	@Override
-	public List<BattleResponse> getReceivedBattleList(User user, int page, Long id) {
-		Pageable pageable = PageRequest.of(page, 12);
-
-		List<BattleBoard> list = id == null
-			? battleRepository.findByOppositeUserIdAndVoteInfoCurrentState(user.getId(), 0, pageable)
-			.getContent()
-			: battleRepository.findById(id, pageable).getContent();
-
-		List<BattleResponse> returnList = new ArrayList<>();
-
-		for (BattleBoard battleBoard : list) {
-			List<VoteOpinion> voteOpinions = voteOpinionRepository.findByVoteInfoId(
-				battleBoard.getVoteInfo().getId());
-
-			returnList.add(new BattleResponse(battleBoard, voteOpinions));
-		}
-
-		return returnList;
-	}
+	// @Override
+	// public List<BattleResponse> getReceivedBattleList(User user, int page, Long id) {
+	// 	Pageable pageable = PageRequest.of(page, 12);
+	//
+	// 	List<BattleBoard> list = id == null
+	// 		? battleRepository.findByOppositeUserIdAndVoteInfoCurrentState(user.getId(), 0, pageable)
+	// 		.getContent()
+	// 		: battleRepository.findById(id, pageable).getContent();
+	//
+	// 	List<BattleResponse> returnList = new ArrayList<>();
+	//
+	// 	for (BattleBoard battleBoard : list) {
+	// 		List<VoteOpinion> voteOpinions = voteOpinionRepository.findByVoteInfoId(
+	// 			battleBoard.getVoteInfo().getId());
+	//
+	// 		returnList.add(new BattleResponse(battleBoard, voteOpinions));
+	// 	}
+	//
+	// 	return returnList;
+	// }
 
 	@Override
 	public void acceptOrDeclineBattle(BattleRespondRequest battleRespondRequest, User user) {

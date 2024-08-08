@@ -6,13 +6,13 @@ import com.woowahanrabbits.battle_people.domain.battle.dto.AwaitingBattleRespons
 import com.woowahanrabbits.battle_people.domain.battle.dto.BattleApplyDto;
 import com.woowahanrabbits.battle_people.domain.battle.dto.BattleInviteRequest;
 import com.woowahanrabbits.battle_people.domain.battle.dto.BattleRespondRequest;
-import com.woowahanrabbits.battle_people.domain.battle.dto.BattleResponse;
+import com.woowahanrabbits.battle_people.domain.battle.dto.BattleVoteDto;
 import com.woowahanrabbits.battle_people.domain.user.domain.User;
 
 public interface BattleService {
-	void registBattle(BattleInviteRequest battleInviteRequest, User user);
+	BattleVoteDto registBattle(BattleInviteRequest battleInviteRequest, User user);
 
-	List<BattleResponse> getReceivedBattleList(User user, int page, Long id);
+	// List<BattleResponse> getReceivedBattleList(User user, int page, Long id);
 
 	void acceptOrDeclineBattle(BattleRespondRequest battleRespondRequest, User user);
 

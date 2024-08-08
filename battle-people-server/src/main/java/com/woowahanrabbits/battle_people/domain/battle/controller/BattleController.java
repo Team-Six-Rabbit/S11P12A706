@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +18,9 @@ import com.woowahanrabbits.battle_people.domain.battle.dto.BattleApplyDto;
 import com.woowahanrabbits.battle_people.domain.battle.dto.BattleInviteRequest;
 import com.woowahanrabbits.battle_people.domain.battle.dto.BattleRespondRequest;
 import com.woowahanrabbits.battle_people.domain.battle.service.BattleService;
+import com.woowahanrabbits.battle_people.domain.notify.service.NotifyService;
 import com.woowahanrabbits.battle_people.domain.user.domain.User;
+import com.woowahanrabbits.battle_people.domain.user.infrastructure.UserRepository;
 import com.woowahanrabbits.battle_people.domain.user.resolver.LoginUser;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,26 +35,16 @@ import lombok.RequiredArgsConstructor;
 public class BattleController {
 
 	private final BattleService battleService;
+	private final NotifyService notifyService;
+	private final UserRepository userRepository;
 
 	//배틀 등록
 	@PostMapping("/invite")
 	@Operation(summary = "[점화] 배틀을 요청한다.")
-	public ResponseEntity<?> registBattle(@RequestBody @Valid BattleInviteRequest battleInviteRequest,
-		@LoginUser User user) {
-
-		battleService.registBattle(battleInviteRequest, user);
+	public ResponseEntity<?> registBattle(@RequestBody BattleInviteRequest battleInviteRequest) {
+		User user = userRepository.findById(7L).orElseThrow();
+		notifyService.sendNotify(battleService.registBattle(battleInviteRequest, user));
 		return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseDto<>("success", "", null));
-	}
-
-	//요청한, 요청받은 배틀 조회
-	@GetMapping("")
-	@PreAuthorize("isAuthenticated()")
-	@Operation(summary = "요청받는 배틀을 조회한다.")
-	public ResponseEntity<?> getRequestBattleList(@LoginUser User user,
-		@RequestParam(defaultValue = "0") int page, @RequestParam(required = false) Long id) {
-
-		return ResponseEntity.status(HttpStatus.OK)
-			.body(new ApiResponseDto<>("success", "", battleService.getReceivedBattleList(user, page, id)));
 	}
 
 	@PatchMapping("/accept-or-decline")
@@ -68,8 +59,8 @@ public class BattleController {
 
 	@GetMapping("/apply-list")
 	@Operation(summary = "[불씨] 모집중인 배틀을 조회한다.")
-	public ResponseEntity<?> getAwaitingBattleList(@RequestParam(defaultValue = "") Integer category, int page,
-		@LoginUser User user) {
+	public ResponseEntity<?> getAwaitingBattleList(@RequestParam(defaultValue = "") Integer category, int page) {
+		User user = userRepository.findById(7L).orElseThrow();
 		List<AwaitingBattleResponseDto> list = battleService.getAwaitingBattleList(category, page, user);
 		return ResponseEntity.status(HttpStatus.OK)
 			.body(new ApiResponseDto<>("success", "", list));

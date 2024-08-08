@@ -15,27 +15,26 @@ import com.woowahanrabbits.battle_people.domain.balancegame.dto.BalanceGameRespo
 import com.woowahanrabbits.battle_people.domain.balancegame.dto.CreateBalanceGameRequest;
 import com.woowahanrabbits.battle_people.domain.balancegame.service.BalanceGameService;
 import com.woowahanrabbits.battle_people.domain.user.domain.User;
-import com.woowahanrabbits.battle_people.domain.user.resolver.LoginUser;
+import com.woowahanrabbits.battle_people.domain.user.infrastructure.UserRepository;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/balance-game")
+@RequiredArgsConstructor
 @Tag(name = "BalanceGameController", description = "밸런스게임 컨트롤러")
 public class BalanceGameController {
 
 	private final BalanceGameService balanceGameService;
-
-	public BalanceGameController(BalanceGameService balanceGameService) {
-		this.balanceGameService = balanceGameService;
-	}
+	private final UserRepository userRepository;
 
 	@PostMapping("")
 	@Operation(summary = "[점화] 밸런스 게임을 생성한다.")
-	public ResponseEntity<?> registBalanceGame(@RequestBody @Valid CreateBalanceGameRequest createBalanceGameRequest,
-		@LoginUser User user) {
+	public ResponseEntity<?> registBalanceGame(@RequestBody @Valid CreateBalanceGameRequest createBalanceGameRequest) {
+		User user = userRepository.findById(7L).orElseThrow();
 		balanceGameService.addBalanceGame(createBalanceGameRequest, user);
 		return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseDto<>("success", "", null));
 	}
@@ -44,16 +43,16 @@ public class BalanceGameController {
 	@Operation(summary = "[점화] 카테고리 별, 진행 상태 별 밸런스 게임 조회 ")
 	public ResponseEntity<ApiResponseDto<?>> getBalanceGameByConditions(
 		@RequestParam(defaultValue = "") Integer category,
-		@RequestParam(defaultValue = "5") int status, @RequestParam int page,
-		@LoginUser User user) {
-
+		@RequestParam(defaultValue = "5") int status, @RequestParam int page) {
+		User user = userRepository.findById(7L).orElseThrow();
 		return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseDto<>("success", "",
 			balanceGameService.getBalanceGameByConditions(category, status, page, user)));
 	}
 
 	@GetMapping("/{id}")
 	@Operation(summary = "Id 값으로 밸런스 게임 조회")
-	public ResponseEntity<ApiResponseDto<?>> getBalanceGameById(@PathVariable Long id, @LoginUser User user) {
+	public ResponseEntity<ApiResponseDto<?>> getBalanceGameById(@PathVariable Long id) {
+		User user = userRepository.findById(7L).orElseThrow();
 		BalanceGameResponse balanceGameResponse = balanceGameService.getBalanceGameById(id, user);
 		return ResponseEntity.status(HttpStatus.OK)
 			.body(new ApiResponseDto<>("success", "", balanceGameResponse));
